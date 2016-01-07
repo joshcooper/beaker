@@ -950,24 +950,8 @@ module Beaker
                                 build_version, platform_configs_dir )
 
           case variant
-          when /^(fedora|el|centos)$/
-            search = "baseurl\\s*=\\s*http:\\/\\/#{hostname}.*$"
-            replace = "baseurl=file:\\/\\/\\/root\\/#{package_name}\\/#{arch}"
-            sed_command = "sed -i 's/#{search}/#{replace}/'"
-            find_and_sed = "find #{host.package_config_dir} -name \"*.repo\" -exec #{sed_command} {} \\;"
-
-            on host, find_and_sed
           when /^(debian|ubuntu|cumulus)$/
-            repo_path = host.repo_path( opts[:dev_builds_repos],
-              dev_builds_url, package_name, build_version )
-
-            search = "deb\\s\\+http:\\/\\/#{hostname}.*$"
-            replace = "deb file:\\/\\/\\/root\\/#{package_name}\\/#{codename} #{codename} #{repo_path}"
-            sed_command = "sed -i 's/#{search}/#{replace}/'"
-            find_and_sed = "find #{host.package_config_dir} -name \"*.list\" -exec #{sed_command} {} \\;"
-
-            on host, find_and_sed
-            on host, "apt-get update"
+            # why only here?
             configure_type_defaults_on( host )
           end
         end
