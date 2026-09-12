@@ -23,6 +23,13 @@ module Beaker
       expect(connection_constructor).to be_a described_class
     end
 
+    it 'self.connect passes options through to the instance connect call' do
+      instance = double('connection')
+      allow(described_class).to receive(:new).and_return(instance)
+      expect(instance).to receive(:connect).with(options)
+      described_class.connect name_hash, user, ssh_opts, options
+    end
+
     it 'connect creates a new connection' do
       expect(Net::SSH).to receive(:start).with(ip, user, ssh_opts).and_return(true)
       connection.connect
