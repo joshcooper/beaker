@@ -50,7 +50,7 @@ module Beaker
 
     def self.connect name_hash, user = 'root', ssh_opts = {}, options = {}
       connection = new name_hash, user, ssh_opts, options
-      connection.connect
+      connection.connect(options)
       connection
     end
 
